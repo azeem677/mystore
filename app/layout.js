@@ -1,9 +1,7 @@
-"use client";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./component/navbar";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
+import Providers from "./provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata = {
-//   title: "E-Commerce Store",
-//   description: "A simple store built with Next.js & Tailwind",
-// };
+export const metadata = {
+  title: "E-Commerce Store",
+  description: "A simple store built with Next.js & Tailwind",
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -26,10 +24,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-         <Provider store={store}>  
-        <Navbar />
-        {children}
-        </Provider>
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

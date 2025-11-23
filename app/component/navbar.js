@@ -62,14 +62,9 @@ export default function Header() {
         )}
       </div>
       <div className="flex items-center space-x-6">
+       
         <span
-          onClick={() => router.push("/products/add")}
-          className="text-[20px] font-bold cursor-pointer"
-        >
-          Admin
-        </span>
-        <span
-          onClick={() => router.push("/products")}
+          onClick={() => router.push("/")}
           className="text-[20px] font-bold cursor-pointer"
         >
           products

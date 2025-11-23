@@ -1,160 +1,59 @@
-// // app/products/page.js
 // "use client";
 // import Link from "next/link";
-// import {  useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// // import { products } from "../untils/data";
-
-
-// export default function ProductsPage() {
-//   const [addedProducts, setAddedProducts] = useState([]);
-//    const [product, setProduct] = useState([]);
-//    const products = useSelector((state) => state.products);
-
-//    useEffect(() => {
-//       setAddedProducts(products);
-//     }, [products]);
-    
-//     useEffect(() => {
-//         fetch('https://fakestoreapi.com/products')
-//         .then(res => res.json())
-//         .then(data => setProduct(data))
-//     }, [])
-//   return (
-//     <div>
-//       <h1 className="text-3xl font-bold m-6">Our Products</h1>
-//         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-//      {addedProducts.length  === 0 ?(
-//       <p>Loading.....</p>
-//      ): (addedProducts.map((c) => (
-//           <div key={c.id} className="bg-white rounded-xl border shadow-md p-10">
-//             <img src={c.image} alt={c.name} className="h-50 w-full  rounded" />
-//             <h2 className="text-xl font-semibold mt-2">{c.name}</h2>
-//             <p className="text-gray-600">${c.price}</p>
-//             <Link href={`/products/${c.id}`} className="inline-block bg-green-400 mt-2 bg-re text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-//               View Details
-//             </Link>
-//           </div>
-//         )))}
-//       </div>
-//       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-//      {product.length===0 ?(
-//       <p>Loading.....</p>
-//      ): (product.map((p) => (
-//           <div key={p.id} className="bg-white rounded-xl border shadow-md p-10">
-//             <img src={p.image} alt={p.name} className="h-50 w-full  rounded" />
-//             <h2 className="text-xl font-semibold mt-2">{p.name}</h2>
-//             <p className="text-gray-600">${p.price}</p>
-//             <Link href={`/products/${p.id}`} className="inline-block bg-green-400 mt-2 bg-re text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-//               View Details
-//             </Link>
-//           </div>
-//         )))}
-//       </div>
-//     </div>
-//   );
-// }
-// "use client";
+// import { useEffect, useState } from "react";
 // import { useSelector } from "react-redux";
 
 // export default function ProductsPage() {
-//   const products = useSelector((state) => state.products);
-// console.log(products);
+//   const productsFromStore = useSelector((state) => state.product) || [];
+//   const [productsApi, setProductsApi] = useState([]);
+
+//   useEffect(() => {
+//     fetch("http://localhost:5000/api/products")
+//       .then((res) => {
+//         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+//         return res.json();
+//       })
+//       .then((data) => setProductsApi(data))
+//       .catch((err) => console.error("Error fetching products:", err));
+//   }, []);
+
 //   return (
-//     <div style={{ padding: 20 }}>
-//       <h2>Products</h2>
-//       {products.length === 0 ? (
-//         <p>No products added yet.</p>
-//       ) : (
-//         <ul>
-//           {products.map((p, index) => (
-//             <li key={index}>
-//               <strong>{p.name}</strong> - ${p.price}
-//               <img src={p.image} alt={p.name} style={{ height: 50, marginLeft: 10 }} /> 
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
-// }
-// // app/products/page.js
-// "use client";
-// import Link from "next/link";
-// import {  useEffect, useState } from "react";
-// import { useSelector } from "react-redux";
-// // import { products } from "../untils/data";
+//     <div className="p-6">
+     
 
+//       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+//         {productsApi.length === 0 ? (
+//           <p className="text-center col-span-full text-gray-500">
+//             Loading API products...
+//           </p>
+//         ) : (
+//           productsApi.map((p) => (
+//             <div
+//               key={p._id || p.id}
+//               className="bg-white rounded-xl border shadow-md p-6 hover:shadow-lg transition"
+//             >
+//               <img
+//                 src={
+//                   p.picture?.startsWith("http")
+//                     ? p.picture
+//                     : `http://localhost:5000/${p.picture}`
+//                 }
+//                 alt={p.name}
+//                 className="h-48 w-full  rounded"
+//               />
+//               <h2 className="text-xl font-semibold mt-3">{p.name}</h2>
+//               <p className="text-gray-600 mt-1">${p.price}</p>
 
-// export default function ProductsPage() {
-//   const [addedProducts, setAddedProducts] = useState([]);
-//    const [product, setProduct] = useState([]);
-//    const products = useSelector((state) => state.products);
-
-//    useEffect(() => {
-//       setAddedProducts(products);
-//     }, [products]);
-    
-//     useEffect(() => {
-//         fetch('https://fakestoreapi.com/products')
-//         .then(res => res.json())
-//         .then(data => setProduct(data))
-//     }, [])
-//   return (
-//     <div>
-//       <h1 className="text-3xl font-bold m-6">Our Products</h1>
-//         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-//      {addedProducts.length  === 0 ?(
-//       <p>Loading.....</p>
-//      ): (addedProducts.map((c) => (
-//           <div key={c.id} className="bg-white rounded-xl border shadow-md p-10">
-//             <img src={c.image} alt={c.name} className="h-50 w-full  rounded" />
-//             <h2 className="text-xl font-semibold mt-2">{c.name}</h2>
-//             <p className="text-gray-600">${c.price}</p>
-//             <Link href={`/products/${c.id}`} className="inline-block bg-green-400 mt-2 bg-re text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-//               View Details
-//             </Link>
-//           </div>
-//         )))}
+//               <Link
+//                 href={`/product?id=${encodeURIComponent(p._id || p.id)}`}
+//                 className="inline-block bg-green-500 mt-3 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+//               >
+//                 View Details
+//               </Link>
+//             </div>
+//           ))
+//         )}
 //       </div>
-//       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-//      {product.length===0 ?(
-//       <p>Loading.....</p>
-//      ): (product.map((p) => (
-//           <div key={p.id} className="bg-white rounded-xl border shadow-md p-10">
-//             <img src={p.image} alt={p.name} className="h-50 w-full  rounded" />
-//             <h2 className="text-xl font-semibold mt-2">{p.name}</h2>
-//             <p className="text-gray-600">${p.price}</p>
-//             <Link href={`/products/${p.id}`} className="inline-block bg-green-400 mt-2 bg-re text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-//               View Details
-//             </Link>
-//           </div>
-//         )))}
-//       </div>
-//     </div>
-//   );
-// }
-// "use client";
-// import { useSelector } from "react-redux";
-
-// export default function ProductsPage() {
-//   const products = useSelector((state) => state.products);
-// console.log(products);
-//   return (
-//     <div style={{ padding: 20 }}>
-//       <h2>Products</h2>
-//       {products.length === 0 ? (
-//         <p>No products added yet.</p>
-//       ) : (
-//         <ul>
-//           {products.map((p, index) => (
-//             <li key={index}>
-//               <strong>{p.name}</strong> - ${p.price}
-//               <img src={p.image} alt={p.name} style={{ height: 50, marginLeft: 10 }} /> 
-//             </li>
-//           ))}
-//         </ul>
-//       )}
 //     </div>
 //   );
 // }
@@ -164,56 +63,71 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function ProductsPage() {
-  const productsFromStore = useSelector((state) => state.product) || []; // ensure this matches your slice key
+  const productsFromStore = useSelector((state) => state.product) || [];
   const [productsApi, setProductsApi] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => setProductsApi(data));
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/products");
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        setProductsApi(data);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
+  const productsToRender = productsApi.length > 0 ? productsApi : productsFromStore;
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold m-6">Our Products</h1>
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">Products</h1>
 
-      {/* Products from Redux */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-        {productsFromStore.length === 0 ? (
-          <p>No custom products yet.</p>
+      {loading && productsApi.length === 0 && (
+        <p className="text-center text-gray-500">Loading products...</p>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {productsToRender.length === 0 && !loading ? (
+          <p className="text-center col-span-full text-gray-500">No products found</p>
         ) : (
-          productsFromStore.map((c) => (
-            <div key={c.id} className="bg-white rounded-xl border shadow-md p-10">
-              <img src={c.image} alt={c.name} className="h-50 w-full rounded" />
-              <h2 className="text-xl font-semibold mt-2">{c.name}</h2>
-              <p className="text-gray-600">${c.price}</p>
-              <Link
-                href={`/product?id=${encodeURIComponent(c.id)}`}
-                className="inline-block bg-green-400 mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          productsToRender.map((p) => (
+            <div
+              key={p._id || p.id}
+              className="bg-white rounded-xl border shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={
+                  p.picture?.startsWith("http")
+                    ? p.picture
+                    : `http://localhost:5000/${p.picture}`
+                }
+                alt={p.name || p.title}
+                className="h-48 w-full object-contain rounded"
+              />
+              <h2 className="text-xl font-semibold mt-3">{p.name || p.title}</h2>
+              <p className="text-gray-600 mt-1">${p.price}</p>
+
+              {/* <Link
+                href={`/product?id=${encodeURIComponent(p._id)}`}
+                className="inline-block bg-green-500 mt-3 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
               >
                 View Details
-              </Link>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Products from API */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 p-4 gap-6">
-        {productsApi.length === 0 ? (
-          <p>Loading API products...</p>
-        ) : (
-          productsApi.map((p) => (
-            <div key={p.id} className="bg-white rounded-xl border shadow-md p-10">
-              <img src={p.image} alt={p.title} className="h-50 w-full rounded" />
-              <h2 className="text-xl font-semibold mt-2">{p.title}</h2>
-              <p className="text-gray-600">${p.price}</p>
+              </Link> */}
               <Link
-                href={`/product?id=${encodeURIComponent(p.id)}`}
-                className="inline-block bg-green-400 mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-              >
-                View Details
-              </Link>
+  href={`/product/${encodeURIComponent(p._id || p.id)}`}
+  className="inline-block bg-green-500 mt-3 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
+>
+  View Details
+</Link>
             </div>
           ))
         )}

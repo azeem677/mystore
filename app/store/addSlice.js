@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Load products from localStorage
-const loadProducts = () => {
-  if (typeof window !== "undefined") {
-    const saved = localStorage.getItem("products");
-    return saved ? JSON.parse(saved) : [];
-  }
-  return [];
-};
+// const loadProducts = () => {
+//   if (typeof window !== "undefined") {
+//     const saved = localStorage.getItem("products");
+//     return saved ? JSON.parse(saved) : [];
+//   }
+//   return [];
+// };
 
 const productsSlice = createSlice({
   name: "products",
-  initialState: loadProducts(), // load from localStorage
+  initialState:[] ,// load from localStorage
   reducers: {
     addProduct: (state, action) => {
       state.push(action.payload);

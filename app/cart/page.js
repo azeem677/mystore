@@ -1,66 +1,293 @@
+
+// "use client";
+
+// import { useState } from "react";
+// import { useSelector, useDispatch } from "react-redux";
+//  // Adjust path
+// import { useRouter } from "next/navigation";
+// import { clearCart, removeFromCart } from "../store/cartSlice";
+
+// export default function CartPage() {
+//   const cartItems = useSelector((state) => state.cart.items);
+//   const dispatch = useDispatch();
+//   const router = useRouter();
+
+//   const totalPrice = cartItems.reduce((total, item) => total + item.price * (item.quantity || 1), 0);
+
+//   const [address, setAddress] = useState({
+//     fullName: "",
+//     email: "",
+//     phone: "",
+//     city: "",
+//     province: "",
+//     street: "",
+//   });
+
+//   const [loading, setLoading] = useState(false);
+
+//   const handleChange = (e) => {
+//     setAddress({ ...address, [e.target.name]: e.target.value });
+//   };
+
+//   // Save cart + address to backend
+//   const handlePlaceOrder = async () => {
+//     if (cartItems.length === 0) {
+//       alert("❌ Cart is empty, nothing to save.");
+//       return;
+//     }
+
+//     // Validate address
+//     for (let key in address) {
+//       if (!address[key]) {
+//         alert(`❌ Please fill in your ${key}`);
+//         return;
+//       }
+//     }
+
+//     setLoading(true);
+//     try {
+//       const res = await fetch("http://localhost:5000/api/carts", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ items: cartItems, totalPrice, address }),
+//       });
+//       if (!res.ok) throw new Error("Failed to place order");
+
+//       const data = await res.json();
+//       console.log("Order saved:", data);
+//       alert("✅ Order placed successfully!");
+//       dispatch(clearCart());
+//       setAddress({ fullName: "", email: "", phone: "", city: "", province: "", street: "" });
+//     } catch (error) {
+//       console.error("❌ Error placing order:", error);
+//       alert("Error: " + error.message);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="flex flex-col items-center mt-10 w-full p-4">
+//       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
+
+//       {cartItems.length === 0 ? (
+//         <p className="text-gray-600">Your cart is empty.</p>
+//       ) : (
+//         <div className="w-full max-w-4xl flex flex-col gap-6">
+//           {/* Cart Items */}
+//           <ul>
+//             {cartItems.map((item) => (
+//               <li
+//                 key={item._id}
+//                 className="flex justify-between items-center bg-white shadow p-4 mb-2 rounded-lg"
+//               >
+//                 <div className="flex items-center gap-4">
+//                   <img
+//                     src={`http://localhost:5000/${item.picture}`} // Full URL
+//                     alt={item.name}
+//                     className="h-20 w-20 object-contain rounded"
+//                   />
+//                   <div>
+//                     <h2 className="text-lg font-semibold">{item.name}</h2>
+//                     <p>${item.price}</p>
+//                     {item.quantity && <p>Quantity: {item.quantity}</p>}
+//                   </div>
+//                 </div>
+//                 <button
+//                   onClick={() => dispatch(removeFromCart(item._id))}
+//                   className="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700"
+//                 >
+//                   Remove
+//                 </button>
+//               </li>
+//             ))}
+//           </ul>
+
+//           {/* Address Form */}
+//           <form className="bg-white border rounded-lg p-6 shadow-md flex flex-col gap-4">
+//             <h2 className="text-2xl font-semibold mb-2">Shipping Address</h2>
+//             <input
+//               type="text"
+//               name="fullName"
+//               placeholder="Full Name"
+//               value={address.fullName}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//             <input
+//               type="email"
+//               name="email"
+//               placeholder="Email"
+//               value={address.email}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//             <input
+//               type="tel"
+//               name="phone"
+//               placeholder="Phone Number"
+//               value={address.phone}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//             <input
+//               type="text"
+//               name="city"
+//               placeholder="City"
+//               value={address.city}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//             <input
+//               type="text"
+//               name="province"
+//               placeholder="Province / State"
+//               value={address.province}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//             <input
+//               type="text"
+//               name="street"
+//               placeholder="Street Address"
+//               value={address.street}
+//               onChange={handleChange}
+//               className="border p-2 w-full rounded"
+//               required
+//             />
+//           </form>
+
+//           {/* Actions */}
+//           <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+//             <button
+//               onClick={() => dispatch(clearCart())}
+//               className="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-900"
+//             >
+//               Clear Cart
+//             </button>
+//             <button
+//               onClick={handlePlaceOrder}
+//               disabled={loading}
+//               className={`bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 ${
+//                 loading ? "opacity-50 cursor-not-allowed" : ""
+//               }`}
+//             >
+//               {loading ? "Placing Order..." : `Place Order - Total: $${totalPrice}`}
+//             </button>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
 "use client";
-export const dynamic = "force-dynamic";
+
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, clearCart } from "../store/cartSlice";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../firebase";
+import { removeFromCart, clearCart, increaseQuantity, decreaseQuantity } from "../store/cartSlice";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
-  const totalPrice = cartItems.reduce((total, item) => total + item.price, 0);
+  const router = useRouter();
 
-  // Save cart data to Firestore
-  const handleSaveCart = async () => {
+  const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  const [address, setAddress] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    city: "",
+    province: "",
+    street: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setAddress({ ...address, [e.target.name]: e.target.value });
+  };
+
+  const handlePlaceOrder = async () => {
     if (cartItems.length === 0) {
       alert("❌ Cart is empty, nothing to save.");
       return;
     }
+
+    for (let key in address) {
+      if (!address[key]) {
+        alert(`❌ Please fill in your ${key}`);
+        return;
+      }
+    }
+
+    setLoading(true);
     try {
-      await addDoc(collection(db, "carts"), {
-        items: cartItems,
-        totalPrice,
-        createdAt: serverTimestamp(),
+      const res = await fetch("http://localhost:5000/api/carts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartItems, totalPrice, address }),
       });
-      alert("✅ Cart saved to Firebase!");
+      if (!res.ok) throw new Error("Failed to place order");
+
+      const data = await res.json();
+      alert("✅ Order placed successfully!");
+      dispatch(clearCart());
+      setAddress({ fullName: "", email: "", phone: "", city: "", province: "", street: "" });
     } catch (error) {
-      console.error("❌ Error saving cart:", error);
+      console.error(error);
       alert("Error: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center mt-20 w-full">
-      <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
+    <div className="flex flex-col items-center mt-10 w-full p-4">
+      <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
       {cartItems.length === 0 ? (
         <p className="text-gray-600">Your cart is empty.</p>
       ) : (
-        <div>
+        <div className="w-full max-w-4xl flex flex-col gap-6">
+          {/* Cart Items */}
           <ul>
             {cartItems.map((item) => (
-              <li
-                key={item.id}
-                className="flex md:w-[700px] w-[300px] justify-between items-center bg-white shadow p-4 mb-2 rounded-lg"
-              >
-                <div className="flex w-full flex-col">
+              <li key={item._id} className="flex justify-between items-center bg-white shadow p-4 mb-2 rounded-lg">
+                <div className="flex items-center gap-4">
                   <img
-                    src={item.image}
+                    src={`http://localhost:5000/${item.picture}`}
                     alt={item.name}
-                    className="h-20 w-20 object-contain"
+                    className="h-20 w-20 object-contain rounded"
                   />
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p>${item.price}</p>
-                  <div className="flex items-center space-x-2">
-                    <p>Color: </p>
-                    <span
-                      className="h-5 w-5 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    ></span>
+                  <div>
+                    <h2 className="text-lg font-semibold">{item.name}</h2>
+                    <p>${item.price}</p>
+                    <div className="flex items-center mt-2 space-x-2">
+                      <button
+                        onClick={() => dispatch(decreaseQuantity(item._id))}
+                        className="bg-gray-300 px-2 rounded hover:bg-gray-400"
+                      >
+                        -
+                      </button>
+                      <span className="px-2">{item.quantity}</span>
+                      <button
+                        onClick={() => dispatch(increaseQuantity(item._id))}
+                        className="bg-gray-300 px-2 rounded hover:bg-gray-400"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <button
-                  onClick={() => dispatch(removeFromCart(item.id))}
+                  onClick={() => dispatch(removeFromCart(item._id))}
                   className="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700"
                 >
                   Remove
@@ -69,23 +296,28 @@ export default function CartPage() {
             ))}
           </ul>
 
-          <div className="flex flex-col mb-10 md:flex-row justify-between items-center">
-            <button
-              onClick={() => dispatch(clearCart())}
-              className="mt-4 bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-900"
-            >
+          {/* Address Form */}
+          <form className="bg-white border rounded-lg p-6 shadow-md flex flex-col gap-4">
+            <h2 className="text-2xl font-semibold mb-2">Shipping Address</h2>
+            <input type="text" name="fullName" placeholder="Full Name" value={address.fullName} onChange={handleChange} className="border p-2 w-full rounded" required />
+            <input type="email" name="email" placeholder="Email" value={address.email} onChange={handleChange} className="border p-2 w-full rounded" required />
+            <input type="tel" name="phone" placeholder="Phone Number" value={address.phone} onChange={handleChange} className="border p-2 w-full rounded" required />
+            <input type="text" name="city" placeholder="City" value={address.city} onChange={handleChange} className="border p-2 w-full rounded" required />
+            <input type="text" name="province" placeholder="Province / State" value={address.province} onChange={handleChange} className="border p-2 w-full rounded" required />
+            <input type="text" name="street" placeholder="Street Address" value={address.street} onChange={handleChange} className="border p-2 w-full rounded" required />
+          </form>
+
+          {/* Actions */}
+          <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+            <button onClick={() => dispatch(clearCart())} className="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-900">
               Clear Cart
             </button>
-
             <button
-              onClick={handleSaveCart}
-              className="mt-4 md:ml-4 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+              onClick={handlePlaceOrder}
+              disabled={loading}
+              className={`bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              Save Cart to Firebase
-            </button>
-
-            <button className="mt-4 md:ml-4 bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-900">
-              Total price: ${totalPrice}
+              {loading ? "Placing Order..." : `Place Order - Total: $${totalPrice}`}
             </button>
           </div>
         </div>
