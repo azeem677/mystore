@@ -1,5 +1,7 @@
 // "use client";
 
+
+
 // import { addToCart } from "@/app/store/cartSlice";
 // import { useRouter } from "next/navigation";
 // import { useDispatch } from "react-redux";
@@ -56,19 +58,29 @@
 //     </div>
 //   );
 // }
+"use client";
+
+import { useDispatch } from "react-redux"; // ✅ Import useDispatch
+import { addToCart } from "@/app/store/cartSlice";
 
 export default function ProductDetails({ product }) {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, quantity: 1 }));
+    alert(`✅ Added "${product.title}" to cart`); // ✅ use title instead of name
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Product Container */}
       <div className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
 
         {/* Product Image */}
         <div className="w-full">
           <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-80  rounded-lg shadow-md"
+            src={product.image} // ✅ direct URL
+            alt={product.title}
+            className="w-full h-80 object-cover rounded-lg shadow-md"
           />
         </div>
 
@@ -76,20 +88,22 @@ export default function ProductDetails({ product }) {
         <div className="flex flex-col justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-800 mb-3">
-              {product.name}
+              {product.title}
             </h1>
 
             <p className="text-lg text-gray-500 mb-4">
-              A high-quality {product.name} available at a great price.
+              {product.description}
             </p>
 
             <p className="text-2xl font-bold text-green-600">
-              Rs {product.price}
+              $ {product.price}
             </p>
           </div>
 
-          {/* Buy Button */}
-          <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-lg transition-all">
+          <button
+            onClick={handleAddToCart}
+            className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-lg transition-all"
+          >
             Add to Cart
           </button>
         </div>
@@ -98,4 +112,3 @@ export default function ProductDetails({ product }) {
     </div>
   );
 }
-
