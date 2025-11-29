@@ -262,7 +262,7 @@ export default function CartPage() {
               <li key={item._id} className="flex justify-between items-center bg-white shadow p-4 mb-2 rounded-lg">
                 <div className="flex items-center gap-4">
                   <img
-                    src={`http://localhost:5000/${item.picture}`}
+                    src={`https://fakestoreapi.com/${item.image}`}
                     alt={item.name}
                     className="h-20 w-20 object-contain rounded"
                   />
