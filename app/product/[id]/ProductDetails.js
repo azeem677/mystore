@@ -66,9 +66,9 @@ export default function ProductDetails({ product }) {
         {/* Product Image */}
         <div className="w-full">
           <img
-            src={`http://localhost:5000/${product.picture}`}
+            src={product.image}
             alt={product.name}
-            className="w-full h-80 object-cover rounded-lg shadow-md"
+            className="w-full h-80  rounded-lg shadow-md"
           />
         </div>
 

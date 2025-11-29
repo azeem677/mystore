@@ -49,18 +49,18 @@
 
 // Required for static export
 export async function generateStaticParams() {
-  const res = await fetch("http://localhost:5000/api/products");
+  const res = await fetch("https://fakestoreapi.com/products");
   const products = await res.json();
 
   return products.map((p) => ({
-    id: p._id.toString(),
+    id: p.id.toString(),
   }));
 }
 
 import ProductDetails from "./ProductDetails";
 
 export default async function ProductPage({ params }) {
-  const res = await fetch(`http://localhost:5000/api/products/${params.id}`);
+  const res = await fetch(`http://fakestoreapi.com/products/${params.id}`);
   const product = await res.json();
 
   return <ProductDetails product={product} />;

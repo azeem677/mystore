@@ -70,7 +70,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/products");
+        const res = await fetch("https://fakestoreapi.com/products");
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setProductsApi(data);
@@ -106,9 +106,9 @@ export default function ProductsPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={
-                  p.picture?.startsWith("http")
-                    ? p.picture
-                    : `http://localhost:5000/${p.picture}`
+                  p.image?.startsWith("http")
+                    ? p.image
+                    : `https://fakestoreapi.com/products/${p.image}`
                 }
                 alt={p.name || p.title}
                 className="h-48 w-full object-contain rounded"
