@@ -58,29 +58,32 @@
 //     </div>
 //   );
 // }
-"use client";
+"use client"; // MUST be first line
 
-import { useDispatch } from "react-redux"; // ✅ Import useDispatch
+import { useDispatch } from "react-redux";
 import { addToCart } from "@/app/store/cartSlice";
+import Image from "next/image";
 
 export default function ProductDetails({ product }) {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, quantity: 1 }));
-    alert(`✅ Added "${product.title}" to cart`); // ✅ use title instead of name
+    alert(`✅ Added "${product.title}" to cart`);
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
-
+        
         {/* Product Image */}
         <div className="w-full">
-          <img
-            src={product.image} // ✅ direct URL
+          <Image
+            src={product.image}
             alt={product.title}
-            className="w-full h-80 object-cover rounded-lg shadow-md"
+            width={400}
+            height={400}
+            className="rounded-lg shadow-md"
           />
         </div>
 
@@ -90,14 +93,8 @@ export default function ProductDetails({ product }) {
             <h1 className="text-3xl font-bold text-gray-800 mb-3">
               {product.title}
             </h1>
-
-            <p className="text-lg text-gray-500 mb-4">
-              {product.description}
-            </p>
-
-            <p className="text-2xl font-bold text-green-600">
-              $ {product.price}
-            </p>
+            <p className="text-lg text-gray-500 mb-4">{product.description}</p>
+            <p className="text-2xl font-bold text-green-600">${product.price}</p>
           </div>
 
           <button
@@ -107,7 +104,6 @@ export default function ProductDetails({ product }) {
             Add to Cart
           </button>
         </div>
-
       </div>
     </div>
   );

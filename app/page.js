@@ -58,6 +58,7 @@
 //   );
 // }
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -104,7 +105,7 @@ export default function ProductsPage() {
               className="bg-white rounded-xl border shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={
                   p.image?.startsWith("http")
                     ? p.image

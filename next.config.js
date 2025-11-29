@@ -11,13 +11,14 @@
 // };
 
 // module.exports = nextConfig;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   images: {
-    domains: ['fakestoreapi.com'],
+  output: 'export', // for static export
+  images: {
+    unoptimized: true, // disables Next.js Image Optimization for static export
+    domains: ['fakestoreapi.com'], // allow external images
   },
-  output: "export", // enables static export
 };
 
 module.exports = nextConfig;
+

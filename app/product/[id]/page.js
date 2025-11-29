@@ -48,19 +48,25 @@
 // app/product/[id]/page.js
 
 // Required for static export
+import ProductDetails from "./ProductDetails";
+
 export async function generateStaticParams() {
+  // Fetch all products to generate static paths
   const res = await fetch("https://fakestoreapi.com/products");
+  if (!res.ok) throw new Error("Failed to fetch products");
   const products = await res.json();
 
-  return products.map((p) => ({
-    id: p.id.toString(),
+  return products.map(product => ({
+    id: product.id.toString(),
   }));
 }
 
-import ProductDetails from "./ProductDetails";
-
 export default async function ProductPage({ params }) {
-  const res = await fetch(`http://fakestoreapi.com/products/${params.id}`);
+  const { id } = params;
+
+  const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+  if (!res.ok) throw new Error("Failed to fetch product");
+
   const product = await res.json();
 
   return <ProductDetails product={product} />;
