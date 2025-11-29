@@ -1,6 +1,8 @@
 
 // "use client";
 
+import ProductDetails from "./ProductDetails";
+
 // import { useParams } from "next/navigation";
 // import { useEffect, useState } from "react";
 // import ProductDetails from "./ProductDetails";
@@ -48,26 +50,21 @@
 // app/product/[id]/page.js
 
 // Required for static export
-import ProductDetails from "./ProductDetails";
 
-export async function generateStaticParams() {
-  // Fetch all products to generate static paths
-  const res = await fetch("https://fakestoreapi.com/products");
-  if (!res.ok) throw new Error("Failed to fetch products");
-  const products = await res.json();
 
-  return products.map(product => ({
-    id: product.id.toString(),
-  }));
-}
+export const dynamic = "force-dynamic"; // fetch data at runtime
 
 export default async function ProductPage({ params }) {
-  const { id } = params;
+  try {
+    const res = await fetch(`https://fakestoreapi.com/products/${params.id}`, {
+      next: { revalidate: 10 }, // optional ISR
+    });
+    if (!res.ok) throw new Error("Failed to fetch product");
 
-  const res = await fetch(`https://fakestoreapi.com/products/${id}`);
-  if (!res.ok) throw new Error("Failed to fetch product");
-
-  const product = await res.json();
-
-  return <ProductDetails product={product} />;
+    const product = await res.json();
+    return <ProductDetails product={product} />;
+  } catch (err) {
+    console.error(err);
+    return <p className="text-center text-red-600 mt-10">Failed to load product.</p>;
+  }
 }
