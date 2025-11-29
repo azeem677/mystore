@@ -104,31 +104,24 @@ export default function ProductsPage() {
               key={p._id || p.id}
               className="bg-white rounded-xl border shadow-md p-6 hover:shadow-lg transition-shadow duration-200"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* Fixed Image */}
               <Image
-                src={
-                  p.image?.startsWith("http")
-                    ? p.image
-                    : `https://fakestoreapi.com/products/${p.image}`
-                }
+                src={p.image?.startsWith("http") ? p.image : `https://fakestoreapi.com/products/${p.image}`}
                 alt={p.name || p.title}
-                className="h-48 w-full object-contain rounded"
+                width={300}   // ✅ required
+                height={300}  // ✅ required
+                className="object-contain rounded h-48 w-full"
               />
+
               <h2 className="text-xl font-semibold mt-3">{p.name || p.title}</h2>
               <p className="text-gray-600 mt-1">${p.price}</p>
 
-              {/* <Link
-                href={`/product?id=${encodeURIComponent(p._id)}`}
+              <Link
+                href={`/product/${encodeURIComponent(p._id || p.id)}`}
                 className="inline-block bg-green-500 mt-3 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
               >
                 View Details
-              </Link> */}
-              <Link
-  href={`/product/${encodeURIComponent(p._id || p.id)}`}
-  className="inline-block bg-green-500 mt-3 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
->
-  View Details
-</Link>
+              </Link>
             </div>
           ))
         )}
