@@ -45,37 +45,23 @@
 //   return <ProductDetails product={product} />;
 // }
 // /app/product/[id]/page.js
+// app/product/[id]/page.js
+
+// Required for static export
+export async function generateStaticParams() {
+  const res = await fetch("http://localhost:5000/api/products");
+  const products = await res.json();
+
+  return products.map((p) => ({
+    id: p._id.toString(),
+  }));
+}
+
 import ProductDetails from "./ProductDetails";
 
-// 1️⃣ generateStaticParams must match folder name [id]
-export async function generateStaticParams() {
-  // fallback IDs for static export
-  return [
-    { id: "1" },
-    { id: "2" },
-    { id: "3" },
-  ];
-}
-
-// 2️⃣ Fetch product
-async function getProduct(id) {
-  try {
-    const res = await fetch(`http://localhost:5000/api/products/${id}`);
-    if (!res.ok) return null;
-    return await res.json();
-  } catch {
-    return null;
-  }
-}
-
-// 3️⃣ Server Component page
 export default async function ProductPage({ params }) {
-  const product = await getProduct(params.id);
-
-  if (!product)
-    return (
-      <p className="text-center mt-10 text-red-500">Product not found</p>
-    );
+  const res = await fetch(`http://localhost:5000/api/products/${params.id}`);
+  const product = await res.json();
 
   return <ProductDetails product={product} />;
 }

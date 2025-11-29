@@ -57,40 +57,45 @@
 //   );
 // }
 
-"use client";
-
 export default function ProductDetails({ product }) {
-  if (!product) return <p>Product not found</p>;
-
   return (
-    <div className="max-w-6xl bg-gray-200 mt-10 rounded mx-auto p-6">
-      {/* Back button */}
-      <button
-        onClick={() => window.history.back()}
-        className="mb-6 text-blue-600 hover:text-blue-800 font-medium"
-      >
-        ← Back to Products
-      </button>
+    <div className="max-w-4xl mx-auto p-6">
+      {/* Product Container */}
+      <div className="bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
 
-      <div className="flex flex-col md:flex-row gap-10 items-start rounded-2xl shadow-lg p-8 bg-white">
         {/* Product Image */}
-        <div className="flex-1 flex justify-center items-center">
+        <div className="w-full">
           <img
             src={`http://localhost:5000/${product.picture}`}
             alt={product.name}
-            className="w-full max-w-sm h-auto object-contain rounded-2xl shadow-md"
+            className="w-full h-80 object-cover rounded-lg shadow-md"
           />
         </div>
 
-        {/* Product Info */}
-        <div className="flex-1 flex flex-col gap-4">
-          <h1 className="text-4xl font-bold">{product.name}</h1>
-          <p className="text-2xl text-green-600 font-semibold">${product.price}</p>
-          <p className="text-gray-700 mt-2">
-            High-quality product for everyday use and special occasions.
-          </p>
+        {/* Product Content */}
+        <div className="flex flex-col justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-3">
+              {product.name}
+            </h1>
+
+            <p className="text-lg text-gray-500 mb-4">
+              A high-quality {product.name} available at a great price.
+            </p>
+
+            <p className="text-2xl font-bold text-green-600">
+              Rs {product.price}
+            </p>
+          </div>
+
+          {/* Buy Button */}
+          <button className="mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-lg transition-all">
+            Add to Cart
+          </button>
         </div>
+
       </div>
     </div>
   );
 }
+
