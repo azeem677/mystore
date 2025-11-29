@@ -55,23 +55,22 @@
 
 
 
-import ProductDetails from "./ProductDetails";
-export const dynamic = "force-dynamic";
-
 export default async function ProductPage({ params }) {
-  try {
-    const res = await fetch(`https://fakestoreapi.com/products/${params.id}`, {
-      next: { revalidate: 10 },
-    });
+  // Await params in case they are async
+  const { id } = await params;
 
-    if (!res.ok) throw new Error("Failed to fetch product");
+  const res = await fetch(`https://fakestoreapi.com/products/${id}`, {
+    next: { revalidate: 10 },
+  });
 
-    const product = await res.json();
+  const product = await res.json();
 
-    return <ProductDetails product={product} />;
-  } catch (err) {
-    console.error(err);
-    return <p className="text-center text-red-600 mt-10">Failed to load product.</p>;
-  }
+  return (
+    <div className="max-w-2xl mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">{product.title}</h1>
+      <img src={product.image} alt={product.title} className="w-full h-auto mb-4" />
+      <p className="text-lg font-semibold mb-2">Price: ${product.price}</p>
+      <p className="text-gray-700">{product.description}</p>
+    </div>
+  );
 }
-
